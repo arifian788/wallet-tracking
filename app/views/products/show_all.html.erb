@@ -1,0 +1,10 @@
+<h1>Products</h1>
+<button class="btn btn-primary">
+        Hi
+        </button>
+<ul>
+    <% @products.each do |product| %>
+        <li><%= product.title %></li>
+            <img src="<%= product.image %>" alt="<%= product.title %>">
+    <% end %>
+</ul>
