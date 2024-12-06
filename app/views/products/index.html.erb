@@ -1,6 +1,48 @@
-<h1>Products</h1>
-<ul>
+<div class="container py-5">
+  <div class="text-center mb-5">
+    <% if flash[:notice_orders] %>
+        <div class="alert alert-success">
+        <%= flash[:notice_orders] %>
+        </div>
+      <% end %>
+
+      <% if flash[:alert_orders] %>
+          <div class="alert alert-danger">
+            <%= flash[:alert_orders] %>
+          </div>
+      <% end %>
+
+    <h1 class="display-4 fw-bold">Welcome to Our Store</h1>
+    <p class="lead">Discover the best products with amazing prices and top-notch quality.</p>
+  </div>
+
+  <div class="row">
     <% @products.each do |product| %>
-        <li><%= product.title %></li>
+      <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm">
+          <img src="<%= product.image %>" class="card-img-top" alt="<%= product.title %>">
+          <div class="card-body">
+            <h5 class="card-title"><%= product.title %></h5>
+            <p class="card-text text-muted">
+              <%= product.description.truncate(100) %>
+            </p>
+            <p class="card-text"><strong>Price:</strong> <%= number_to_currency(product.price) %></p>
+            <p class="card-text">
+              <strong>Rating:</strong> <%= product.rating_rate %> 
+              (<%= pluralize(product.rating_count, 'review') %>)
+            </p>
+            <p class="card-text"><span class="badge bg-info"><%= product.category %></span></p>
+          </div>
+          <div class="card-footer text-center">
+            <a href="/products/<%= product.id %>/order" class="btn btn-primary">Buy Now</a>
+            <a href="/products/<%= product.id %>" class="btn btn-outline-secondary">Details</a>
+          </div>
+        </div>
+      </div>
     <% end %>
-</ul>
+  </div>
+
+  <div class="text-center mt-5">
+    <a href="#" class="btn btn-lg btn-success">View All Products</a>
+  </div>
+</div>

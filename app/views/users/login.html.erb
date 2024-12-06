@@ -1,6 +1,15 @@
-<h1>Login</h1>
 
-<%= form_with url: authenticate_path, method: :post do |form| %>
+<div class="container">
+<h1>Login</h1>
+  <%= form_with model: @user, url: authenticate_path, method: :post do |form| %>
+  <% if @user.errors.any? %>
+    <div class="alert alert-danger">
+      <% @user.errors.full_messages.each do |message| %>
+        <div><%= message %></div>
+      <% end %>
+    </div>
+  <% end %>
+
   <div>
     <%= form.label :email %>
     <%= form.email_field :email, class: 'form-control' %>
@@ -15,6 +24,6 @@
     <%= form.submit "Login", class: 'btn btn-primary' %>
   </div>
 
-              <p>Don't have an account? <a href="/register">Sign up</a>.</p>
-
+  <p>Don't have an account? <a href="/register">Sign up</a>.</p>
 <% end %>
+</div>

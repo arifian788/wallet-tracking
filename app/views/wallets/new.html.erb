@@ -1,0 +1,41 @@
+<div class="container">
+    <h1>
+        Topup Wallet
+    </h1>
+
+    <a><%= link_to "Create New Wallet", "/wallets/new",method: :post, class: "btn btn-success" %></a>
+
+    <%= form_with model: @wallet, local: true, url: topup_path, method: :post do |form| %>
+        <% if flash[:notice] %>
+            <div class="alert alert-success">
+            <%= flash[:notice] %>
+            </div>
+        <% end %>
+
+        <% if flash[:alert] %>
+            <div class="alert alert-danger">
+            <%= flash[:alert] %>
+            </div>
+        <% end %>
+
+        <div>
+            <%= form.label :wallet_number, "Wallet Number", class: "form-label" %>
+            <%= form.select :wallet_number, Wallet.where(user_id: session[:user_id]).map { |wallet| [wallet.wallet_number] },
+                    { prompt: "Select a sender wallet" }, 
+                    { class: "form-control", required: true } %>
+        </div>
+        <div>
+            <%= form.label :amount %>
+            <%= form.number_field :amount, class: 'form-control' %>
+        </div>
+
+        <div class="form-group">
+            <%= form.label :notes, "Topup Notes", class: "form-label" %>
+            <%= form.text_area :notes, class: "form-control", rows: 3 %>
+        </div>
+
+        <div>
+            <%= form.submit "Topup", class: 'btn btn-primary' %>
+        </div>
+    <% end %>
+</div>

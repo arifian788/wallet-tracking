@@ -1,32 +1,47 @@
 <div class="container mt-5">
   <h1 class="mb-4">Transactions</h1>
-  
+    <% if flash[:notice_transaction] %>
+        <div class="alert alert-success">
+        <%= flash[:notice_transaction] %>
+        </div>
+      <% end %>
+
+      <% if flash[:alert_transaction] %>
+          <div class="alert alert-danger">
+            <%= flash[:alert_transaction] %>
+          </div>
+      <% end %>
   <a href="/transactions/new" class="btn btn-primary mb-3">Add Transaction</a>
   <table class="table table-striped table-bordered">
     <thead class="thead-dark">
       <tr>
         <th>#</th>
-        <th>Title</th>
         <th>Amount</th>
-        <th>Status</th>
-        <th>Actions</th>
+        <th>Notes</th>
+        <th>Status Transaction</th>
+        <th>Source</th>
+        <th>Target</th>
+        <th>Action</th>
       </tr>
     </thead>
-    <tbody>
+      <tbody>
       <% @transactions.each_with_index do |transaction, index| %>
+        <% @source = User.find_by(user_id: session[:user_id]) %>
+        <% @target = User.find_by(user_id: transaction.target_wallet_id) %>
         <tr>
           <td><%= index + 1 %></td>
-          <td><%= transaction.title %></td>
           <td><%= number_to_currency(transaction.amount) %></td>
+          <td><%= transaction.notes %></td>
           <td>
-            <span class="badge <%= transaction.status == 'completed' ? 'badge-success' : 'badge-warning' %>">
-              <%= transaction.status.capitalize %>
-            </span>
+            <div class="alert alert-secondary" role="alert">
+              <%= transaction.transaction_type.capitalize %>
+            </div>
           </td>
+          <td><%= @source&.name || "Unknown" %></td>
+          <td><%= @target&.name || "No target wallet number" %></td>
           <td>
-            <a href="#" class="btn btn-primary btn-sm">View</a>
-            <a href="#" class="btn btn-danger btn-sm">Delete</a>
-          </td>
+                <%= button_to "Delete", "transactions/#{transaction.id}/delete", method: :post, class: "btn btn-danger" %>
+            </td>
         </tr>
       <% end %>
     </tbody>

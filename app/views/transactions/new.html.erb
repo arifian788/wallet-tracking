@@ -2,26 +2,33 @@
   <h1 class="mb-4">New Transaction</h1>
 
   <%= form_with(model: @transaction, local: true, class: "needs-validation") do |form| %>
+    <% if flash[:notice_transaction] %>
+        <div class="alert alert-success">
+        <%= flash[:notice_transaction] %>
+        </div>
+      <% end %>
+
+      <% if flash[:alert_transaction] %>
+          <div class="alert alert-danger">
+            <%= flash[:alert_transaction] %>
+          </div>
+      <% end %>
+    
     <div class="form-group">
-      <%= form.label :source_wallet_number, "Sender Wallet", class: "form-label" %>
-      <%= form.number_field :source_wallet_number, class: "form-control", required: true %>
+      <%= form.label :source_wallet_id, "Sender Wallet", class: "form-label" %>
+      <%= form.select :source_wallet_id, Wallet.where(user_id: session[:user_id]).map { |wallet| [wallet.wallet_number, wallet.id] },
+            { prompt: "Select a sender wallet" }, 
+            { class: "form-control", required: true } %>
     </div>
 
     <div class="form-group">
-      <%= form.label :target_wallet_number, "Receiver Wallet", class: "form-label" %>
-      <%= form.number_field :target_wallet_number, class: "form-control", required: true %>
+      <%= form.label :target_wallet_id, "Receiver Wallet", class: "form-label" %>
+      <%= form.number_field :target_wallet_id, class: "form-control", required: true%>
     </div>
-
+    
     <div class="form-group">
       <%= form.label :amount, class: "form-label" %>
       <%= form.number_field :amount, class: "form-control", required: true, step: "0.01" %>
-    </div>
-
-    <div class="form-group">
-      <%= form.label :transaction_type, class: "form-label" %>
-      <%= form.select :transaction_type, [["Transfer", "transfer"], ["Topup", "topup"], ["Purchase", "purchase"]],
-            { prompt: "Select a transaction type" }, 
-            { class: "form-control", required: true } %>
     </div>
 
     <div class="form-group">

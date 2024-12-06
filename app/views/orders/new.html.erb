@@ -1,0 +1,51 @@
+<div class="container mt-5">
+    <% if flash[:notice_orders] %>
+        <div class="alert alert-success">
+        <%= flash[:notice_orders] %>
+        </div>
+      <% end %>
+
+      <% if flash[:alert_orders] %>
+          <div class="alert alert-danger">
+            <%= flash[:alert_orders] %>
+          </div>
+      <% end %>
+
+  <h1>Buy Now: <%= @product.title %></h1>
+
+  <div class="card mb-4">
+    <img src="<%= @product.image %>" class="card-img-top" alt="<%= @product.title %>">
+    <div class="card-body">
+      <p><strong>Price:</strong> <%= number_to_currency(@product.price) %></p>
+      <p><strong>Description:</strong> <%= @product.description %></p>
+    </div>
+  </div>
+
+<%= form_with model: @order, local: true, url: "/products/#{@product.id}/order", method: :post do |form| %>
+  <div class="form-group">
+    <%= form.label :source_wallet_id, "Source Wallet", class: "form-label" %>
+    <%= form.select :source_wallet_id, Wallet.where(user_id: session[:user_id]).map { |wallet| [wallet.wallet_number, wallet.id] },
+          { prompt: "Select a source wallet" }, 
+          { class: "form-control", required: true } %>
+  </div>
+
+  <div class="form-group">
+      <%= form.label :quantity, "Quantity", class: "form-label" %>
+      <%= form.number_field :quantity, value: 0, class: "form-control", required: true %>
+    </div>
+
+  <div class="form-group">
+    <%= form.label :notes, "Order Notes", class: "form-label" %>
+    <%= form.text_area :notes, class: "form-control", rows: 3 %>
+  </div>
+
+  <p> <b>Total: <%= form.object.total_price = number_to_currency(@product.price * @order.quantity) %></b></p>
+    <%= form.hidden_field :total_price, id: "total-price-input", value: @product.price %>
+
+  <div class="mt-4">
+    <%= form.submit "Buy Now", class: "btn btn-primary" %>
+    <%= link_to "Back", products_path, class: "btn btn-secondary" %>
+  </div>
+
+<% end %>
+</div>

@@ -5,6 +5,14 @@
       <h1>Register</h1>
 
       <%= form_with model: @user, url: register_path, method: :post do |form| %>
+        <% if @user.errors.any? %>
+            <div class="alert alert-danger">
+                <% @user.errors.each do |error| %>
+                    <div><%= error.full_message %></div>
+                <% end %>
+            </div>
+        <% end %>
+        
         <div>
             <%= form.label :name %>
             <%= form.text_field :name, class: 'form-control' %>

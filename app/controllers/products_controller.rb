@@ -9,9 +9,13 @@ class ProductsController < ApplicationController
     if @products.empty?
       helpers.fetch_and_save_products
       @products = Product.all
-      flash[:notice] = "Products fetched and saved successfully."
+      flash[:notice_products] = "Products fetched and saved successfully."
     else
-      flash[:notice] = "Products loaded from the database."
+      flash[:notice_products] = "Products loaded from the database."
     end
+  end
+
+  def show
+    @product = Product.find(params[:id])
   end
 end

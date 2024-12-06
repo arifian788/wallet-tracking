@@ -1,0 +1,13 @@
+<div class="container mt-5">
+  <div class="card">
+    <img src="<%= @product.image %>" class="card-img-top" alt="<%= @product.title %>">
+    <div class="card-body">
+      <h1 class="card-title"><%= @product.title %></h1>
+      <p class="card-text"><%= @product.description %></p>
+      <p class="card-text"><strong>Price:</strong> <%= number_to_currency(@product.price) %></p>
+      <p class="card-text"><strong>Category:</strong> <%= @product.category %></p>
+      <p class="card-text"><strong>Rating:</strong> <%= @product.rating_rate %> (based on <%= @product.rating_count %> reviews)</p>
+      <a href="<%= products_path %>" class="btn btn-secondary">Back to Products</a>
+    </div>
+  </div>
+</div>
