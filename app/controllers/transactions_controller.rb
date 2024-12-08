@@ -46,7 +46,7 @@ class TransactionsController < ApplicationController
           flash[:notice_transaction] = "Transfer successful!"
           redirect_to transactions_path and return
         else
-          puts "@transaction.errors.full_messages"
+          puts @transaction.errors.full_messages
           flash[:alert_transaction] = @transaction.errors.full_messages.join(", ")
           render :new, status: :unprocessable_entity, notice: @transaction.errors.full_messages.join(", ")
         end

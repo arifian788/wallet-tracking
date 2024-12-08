@@ -23,13 +23,13 @@ class OrdersController < ApplicationController
         flash[:alert_orders] = "Insufficient balance"
         render :new, status: :unprocessable_entity, notice: flash[:alert_orders]
       else
-        # update balance
         wallet.update(balance: wallet.balance - @order.total_price)
 
         Order.create(
           user_id: @order.user_id,
           product_id: @order.product_id,
           quantity: @order.quantity,
+          price: @product.price,
           total_price: @order.total_price,
           notes: @order.notes
         )
