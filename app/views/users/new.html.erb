@@ -7,9 +7,7 @@
       <%= form_with model: @user, url: register_path, method: :post do |form| %>
         <% if @user.errors.any? %>
             <div class="alert alert-danger">
-                <% @user.errors.each do |error| %>
-                    <div><%= error.full_message %></div>
-                <% end %>
+                <%= flash[:alert_user] %>
             </div>
         <% end %>
         

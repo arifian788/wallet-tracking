@@ -2,12 +2,10 @@
 <div class="container">
 <h1>Login</h1>
   <%= form_with model: @user, url: authenticate_path, method: :post do |form| %>
-  <% if @user.errors.any? %>
-    <div class="alert alert-danger">
-      <% @user.errors.full_messages.each do |message| %>
-        <div><%= message %></div>
-      <% end %>
-    </div>
+  <% if flash[:alert_user] %>
+      <div class="alert alert-danger">
+          <%= flash[:alert_user] %>
+      </div>
   <% end %>
 
   <div>

@@ -16,7 +16,7 @@
                 <h4 class="card-title text-primary mb-3">Wallet Account</h4>            
                 <% @wallets.each_with_index do |wallet, index| %>
                 <p class="card-text">
-                    <strong><%= index + 1 %>. Wallet Number:</strong> <%= wallet.wallet_number %>
+                    <strong><%= index + 1 %>. Wallet Number:</strong> <%= wallet.wallet_number %> <br/>
                     <strong>Balance:</strong> <%= number_to_currency(wallet.balance) %>
                 </p>
                 <% end %>

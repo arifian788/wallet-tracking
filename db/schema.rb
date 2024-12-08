@@ -11,12 +11,15 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[8.0].define(version: 2024_12_04_080052) do
-  create_table "orders", primary_key: "order_id", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_catalog.plpgsql"
+
+  create_table "orders", primary_key: "order_id", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "product_id", null: false
     t.integer "price"
     t.integer "quantity"
-    t.decimal "total_price", precision: 10
+    t.decimal "total_price"
     t.string "notes"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -24,9 +27,9 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_04_080052) do
     t.index ["user_id"], name: "index_orders_on_user_id"
   end
 
-  create_table "products", primary_key: "product_id", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "products", primary_key: "product_id", force: :cascade do |t|
     t.string "title"
-    t.decimal "price", precision: 10
+    t.decimal "price"
     t.text "description"
     t.string "category"
     t.string "image"
@@ -36,12 +39,13 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_04_080052) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "transactions", primary_key: "transaction_id", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "transactions", primary_key: "transaction_id", force: :cascade do |t|
     t.bigint "source_wallet_id"
     t.bigint "target_wallet_id"
+    t.bigint "user_id"
     t.bigint "orders_id"
     t.bigint "product_id"
-    t.decimal "amount", precision: 10
+    t.decimal "amount"
     t.string "transaction_type"
     t.string "notes"
     t.datetime "created_at", null: false
@@ -50,9 +54,10 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_04_080052) do
     t.index ["product_id"], name: "index_transactions_on_product_id"
     t.index ["source_wallet_id"], name: "index_transactions_on_source_wallet_id"
     t.index ["target_wallet_id"], name: "index_transactions_on_target_wallet_id"
+    t.index ["user_id"], name: "index_transactions_on_user_id"
   end
 
-  create_table "users", primary_key: "user_id", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "users", primary_key: "user_id", force: :cascade do |t|
     t.string "name"
     t.string "email"
     t.string "password_digest"
@@ -61,9 +66,9 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_04_080052) do
     t.index ["email"], name: "unique_emails", unique: true
   end
 
-  create_table "wallets", primary_key: "wallet_id", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "wallets", primary_key: "wallet_id", force: :cascade do |t|
     t.bigint "wallet_number"
-    t.decimal "balance", precision: 10
+    t.decimal "balance"
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -74,6 +79,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_04_080052) do
   add_foreign_key "orders", "users", primary_key: "user_id"
   add_foreign_key "transactions", "orders", column: "orders_id", primary_key: "order_id"
   add_foreign_key "transactions", "products", primary_key: "product_id"
+  add_foreign_key "transactions", "users", primary_key: "user_id"
   add_foreign_key "transactions", "wallets", column: "source_wallet_id", primary_key: "wallet_id"
   add_foreign_key "transactions", "wallets", column: "target_wallet_id", primary_key: "wallet_id"
   add_foreign_key "wallets", "users", primary_key: "user_id"
