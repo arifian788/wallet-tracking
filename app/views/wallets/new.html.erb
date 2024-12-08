@@ -3,7 +3,7 @@
         Topup Wallet
     </h1>
 
-    <a><%= link_to "Create New Wallet", "/generate-wallet",method: :post, class: "btn btn-success" %></a>
+    <%= button_to "Create New Wallet", generate_wallet_path, method: :post, class: "btn btn-success" %>
 
     <%= form_with model: @wallet, local: true, url: topup_path, method: :post do |form| %>
         <% if flash[:notice_wallet] %>

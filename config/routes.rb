@@ -35,7 +35,7 @@ Rails.application.routes.draw do
   # topup wallet
   get "/topup", to: "wallets#new"
   post "/topup", to: "wallets#topup"
-  post "/generate-wallet", to: "wallets#create"
+  post "/generate-wallet", to: "wallets#create", as: :generate_wallet
 
   # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
   # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest

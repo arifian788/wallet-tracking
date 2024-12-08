@@ -16,14 +16,8 @@ class WalletsController < ApplicationController
       user_id: session[:user_id]
     )
 
-    if wallet.save
-      flash[:notice_wallet] = "Wallet created successfully! Your wallet number is #{wallet.wallet_number}."
-      redirect_back fallback_location: transactions_path, status: :created, notice: flash[:notice_wallet]
-    else
-      puts wallet.errors.full_messages
-      flash[:alert_wallet] = wallet.errors.full_messages.join(", ")
-      render :new, status: :unprocessable_entity, notice: wallet.errors.full_messages.join(", ")
-    end
+    flash[:notice_transaction] = "Wallet created successfully! Your wallet number is #{wallet.wallet_number}."
+    redirect_to transactions_path and return
   end
 
   def topup
