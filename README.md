@@ -1,29 +1,18 @@
-# **Ruby Wallet System**
+# **Ruby Tracking Wallet System**
 
 ## **Overview**
 
-This project is an internal wallet transactional system built using Ruby on Rails. It enables entities like users, teams, and stocks to have their own wallets to manage money. The system supports transferring funds between wallets, depositing, and withdrawing money while adhering to database integrity and validation rules.
-
-Check the [wiki page](https://gitlab.com/farizaw/ruby-wallet-system/-/wikis/API-usage).
-
----
-
-## **Features**
-
-- Each entity (e.g., `User`, `Team`, `Stock`) has a **wallet** to manage funds.
-- Supports **credit** (deposit), **debit** (withdraw), and **transfer** transactions.
-- Transactions are handled in compliance with **ACID standards** using database transactions.
-- Dynamic or persistent calculation of wallet balances.
-- Built-in validations to ensure data integrity.
-- Scalable design using **polymorphic relationships** and **Single Table Inheritance (STI)**.
+This project is an internal wallet tracking system built using Ruby on Rails. Designed to manage and monitor financial transactions, balances, and activities within a digital or virtual wallet.
 
 ---
 
 ## **Models and Relationships**
 
-- **User**, **Team**, and **Stock**: Entities that own wallets.
+- **User**, **Wallets**, **Products**, **Orders**, and **Transaction**: Entities that own wallets.
 - **Wallet**: Polymorphic model that tracks the balance for each entity.
 - **Transaction**: Tracks money movement between wallets with fields like `source_wallet`, `target_wallet`, and `amount`.
+- **Products**: Display product details from `https://fakestoreapi.com/` platform.
+- **Orders**: Track order products from user 
 
 ---
 
@@ -31,8 +20,8 @@ Check the [wiki page](https://gitlab.com/farizaw/ruby-wallet-system/-/wikis/API-
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/farizaw/ruby-wallet-system.git
-   cd ruby-wallet-system
+   git clone https://github.com/arifian788/wallet-tracking.git
+   cd wallet-tracking
    ```
 
 2. Install dependencies:
@@ -55,84 +44,68 @@ Check the [wiki page](https://gitlab.com/farizaw/ruby-wallet-system/-/wikis/API-
 
 ---
 
-## **Usage**
-
-### **Creating Entities and Wallets**
-In the Rails console:
-```ruby
-user = User.create(name: "Alice", email: "alice@example.com")
-team = Team.create(name: "Team Alpha", description: "A great team!")
-
-# Create wallets for entities
-user_wallet = user.create_wallet
-team_wallet = team.create_wallet
-```
-
-### **Performing Transactions**
-```ruby
-# Deposit money into User's wallet
-Transaction.create!(target_wallet: user_wallet, amount: 100.00)
-
-# Transfer money from User to Team
-Transaction.create!(source_wallet: user_wallet, target_wallet: team_wallet, amount: 50.00)
-```
-
-### **Checking Wallet Balance**
-```ruby
-user_wallet.balance # Returns the calculated or stored balance
-team_wallet.balance
-```
-
----
-
 ## **Database Schema**
 
 ### **Users**
-| Field      | Type    |
-|------------|---------|
-| id         | integer |
-| name       | string  |
-| email      | string  |
-| created_at | datetime |
-| updated_at | datetime |
+| Field            |  Type    |
+|------------------|----------|
+| user_id          | integer  |
+| name             | string   |
+| email            | string   |
+| password_digest  | string   |
+| created_at       | datetime |
+| updated_at       | datetime |
 
 ### **Wallets**
 | Field          | Type       |
 |----------------|------------|
-| id             | integer    |
-| walletable_id  | integer    |
-| walletable_type| string     |
+| wallet_id      | integer    |
+| wallet_number  | integer    |
 | balance        | decimal    |
+| user_id        | integer    |
+| created_at     | datetime   |
+| updated_at     | datetime   |
+
+### **Orders**
+| Field          | Type       |
+|----------------|------------|
+| order_id       | integer    |
+| user_id        | integer    |
+| product_id     | integer    |
+| price          | decimal    |
+| quantity       | integer    |
+| total_price    | decimal    |
+| notes          | string     |
+| created_at     | datetime   |
+| updated_at     | datetime   |
+
+### **Products**
+| Field          | Type       |
+|----------------|------------|
+| product_id     | integer    |
+| title          | string     |
+| price          | decimal    |
+| description    | string     |
+| category       | string     |
+| image          | string     |
+| rating_rate    | decimal    |
+| rating_count   | integer    |
 | created_at     | datetime   |
 | updated_at     | datetime   |
 
 ### **Transactions**
 | Field            | Type       |
 |------------------|------------|
-| id               | integer    |
+| transaction_id   | integer    |
 | source_wallet_id | integer    |
 | target_wallet_id | integer    |
+| orders_id        | integer    |
+| product_id       | integer    |
 | amount           | decimal    |
+| transaction_type | string     |
+| notes            | string     |
 | created_at       | datetime   |
 | updated_at       | datetime   |
-
----
-
-## **Testing**
-
-Run the test suite:
-```bash
-rails test
-```
-
----
-
-## **Future Improvements**
-
-- Implement APIs for external integrations (e.g., RESTful endpoints).
-- Add support for currency conversion.
-- Build a user-friendly front-end interface.
-- Implement advanced reporting and analytics for transactions.
 
 ---
 
@@ -142,6 +115,3 @@ This project is licensed under the MIT License. See the `LICENSE` file for detai
 
 ---
 
-## **Contributors**
-
-- [Fariz A.](https://gitlab.com/farizaw)
