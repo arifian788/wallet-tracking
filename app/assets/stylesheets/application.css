@@ -140,3 +140,13 @@
     gap: 20px;
     flex-wrap: wrap;
   }
+
+  main {
+    overflow:auto;
+    padding-bottom:150px; 
+  }
+
+  footer {
+    position: relative;
+    clear:both;
+  } 

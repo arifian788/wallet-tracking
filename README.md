@@ -11,7 +11,7 @@ This project is an internal wallet tracking system built using Ruby on Rails. De
 - **User**, **Wallets**, **Products**, **Orders**, and **Transaction**: Entities that own wallets.
 - **Wallet**: Polymorphic model that tracks the balance for each entity.
 - **Transaction**: Tracks money movement between wallets with fields like `source_wallet`, `target_wallet`, and `amount`.
-- **Products**: Display product details from `https://fakestoreapi.com/` platform.
+- **Products**: Display product details from `https://fakestoreapi.com/products` platform.
 - **Orders**: Track order products from user 
 
 ---
@@ -31,7 +31,6 @@ This project is an internal wallet tracking system built using Ruby on Rails. De
 
 3. Set up the database:
    ```bash
-   rails db:create
    rails db:migrate
    ```
 
