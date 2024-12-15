@@ -16,7 +16,7 @@
     
     <div class="form-group">
       <%= form.label :source_wallet_id, "Sender Wallet", class: "form-label" %>
-      <%= form.select :source_wallet_id, Wallet.where(user_id: session[:user_id]).map { |wallet| [wallet.wallet_number, wallet.id] },
+      <%= form.select :source_wallet_id, Wallet.where(user_id: session[:user_id]).map { |wallet| [wallet.wallet_number] },
             { prompt: "Select a sender wallet" }, 
             { class: "form-control", required: true } %>
     </div>

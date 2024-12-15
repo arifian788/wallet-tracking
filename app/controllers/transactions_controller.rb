@@ -19,7 +19,8 @@ class TransactionsController < ApplicationController
   def create
     @transaction = Transaction.new(transaction_params)
 
-    source_wallet = Wallet.find_by(user_id: session[:user_id])
+    source_wallet = Wallet.where(wallet_number: @transaction.source_wallet_id).first
+
     target_wallet = Wallet.find_by(wallet_number: @transaction.target_wallet_id)
 
     if target_wallet.nil?
@@ -64,6 +65,6 @@ class TransactionsController < ApplicationController
 
   private
   def transaction_params
-    params.require(:transaction).permit(:wallet_number, :target_wallet_id, :amount, :transaction_type, :notes)
+    params.require(:transaction).permit(:source_wallet_id, :target_wallet_id, :amount, :transaction_type, :notes)
   end
 end

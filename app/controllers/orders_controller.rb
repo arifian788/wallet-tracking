@@ -36,7 +36,7 @@ class OrdersController < ApplicationController
 
         order_id = Order.last.id
         transaction = Transaction.create(
-          source_wallet_id:  @order.user_id,
+          source_wallet_id:  wallet.wallet_id,
           orders_id: order_id,
           product_id: @order.product_id,
           user_id: @order.user_id,

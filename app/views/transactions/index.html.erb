@@ -27,7 +27,10 @@
       <tbody>
       <% @transactions.each_with_index do |transaction, index| %>
         <% @source = User.find_by(user_id: session[:user_id]) %>
-        <% @target = User.find_by(user_id: transaction.target_wallet_id) %>
+        <% wallet = Wallet.find_by(wallet_id: transaction.target_wallet_id) %>
+        <% if wallet %>
+          <% @target = User.find_by(user_id: wallet.user_id) %>
+        <% end %>
         <tr>
           <td><%= index + 1 %></td>
           <td><%= number_to_currency(transaction.amount) %></td>
@@ -37,12 +40,14 @@
               <%= transaction.transaction_type.capitalize %>
             </div>
           </td>
-          <td><%= @source&.name.capitalize || "Unknown" %></td>
-          <td><%= if @target&.name.blank? 
-            "No target wallet number"
-          else
-            @target&.name.capitalize
-          end %></td>
+          <td><%= @source&.name.capitalize %></td>
+          <td>
+            <% if transaction.target_wallet_id.nil? %>
+              No Target Wallet Number
+            <% else %>
+              <%= @target&.name.capitalize %>
+            <% end %>
+          </td>
           <td>
                 <%= button_to "Delete", "transactions/#{transaction.id}/delete", method: :post, class: "btn btn-danger" %>
             </td>
